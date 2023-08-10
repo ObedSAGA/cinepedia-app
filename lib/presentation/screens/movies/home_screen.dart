@@ -12,7 +12,8 @@ class HomeScreenMovies extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
         body: Scaffold(
-      body: _HomeView(),
+              body: _HomeView(),
+              bottomNavigationBar: CustomBottomNavigation(),
     ));
   }
 }
