@@ -3,7 +3,7 @@ import 'package:cinemapedia/config/helpers/human_formats.dart';
 import 'package:cinemapedia/domain/entities/movie.dart';
 import 'package:flutter/material.dart';
 
-class MovieHorizontalListView extends StatelessWidget {
+class MovieHorizontalListView extends StatefulWidget {
   final List<Movie> movies;
   final String? title;
   final String? subtitle;
@@ -17,20 +17,47 @@ class MovieHorizontalListView extends StatelessWidget {
       this.loadNextPage});
 
   @override
+  State<MovieHorizontalListView> createState() =>
+      _MovieHorizontalListViewState();
+}
+
+class _MovieHorizontalListViewState extends State<MovieHorizontalListView> {
+  final scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(() {
+      if (widget.loadNextPage == null) return;
+      if (scrollController.position.pixels + 200 >=
+          scrollController.position.maxScrollExtent) {
+        widget.loadNextPage!();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 350,
       child: Column(
         children: [
-          if (title != null || subtitle != null)
-            _Title(title: title, subtitle: subtitle),
+          if (widget.title != null || widget.subtitle != null)
+            _Title(title: widget.title, subtitle: widget.subtitle),
           Expanded(
               child: ListView.builder(
-                  itemCount: movies.length,
+                  controller: scrollController,
+                  itemCount: widget.movies.length,
                   scrollDirection: Axis.horizontal,
                   physics: const BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return _Slide(movie: movies[index]);
+                    return _Slide(movie: widget.movies[index]);
                   }))
         ],
       ),
@@ -45,17 +72,13 @@ class _Slide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final textStyles = Theme.of(context).textTheme;
-
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
-
           //* IMAGE
           SizedBox(
             width: 150,
@@ -68,17 +91,18 @@ class _Slide extends StatelessWidget {
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress != null) {
                     return const Padding(
-                      padding: EdgeInsets.only( top: 30),
+                      padding: EdgeInsets.only(top: 30),
                       child: Center(
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
                         ),
                       ),
                     );
-                    }
+                  }
 
-
-                  return FadeIn(child: child,);
+                  return FadeIn(
+                    child: child,
+                  );
                 },
               ),
             ),
@@ -99,15 +123,19 @@ class _Slide extends StatelessWidget {
             child: Row(
               children: [
                 Icon(Icons.star_half_outlined, color: Colors.yellow.shade800),
-                const SizedBox(width: 3,),
-                Text('${movie.voteAverage}', style: textStyles.bodyMedium?.copyWith(color: Colors.yellow.shade800)),
+                const SizedBox(
+                  width: 3,
+                ),
+                Text('${movie.voteAverage}',
+                    style: textStyles.bodyMedium
+                        ?.copyWith(color: Colors.yellow.shade800)),
                 // const SizedBox(width: 10,),
                 const Spacer(),
-                Text(HumanFormats.number(movie.popularity), style: textStyles.bodySmall),
+                Text(HumanFormats.number(movie.popularity),
+                    style: textStyles.bodySmall),
               ],
             ),
           )
-
         ],
       ),
     );

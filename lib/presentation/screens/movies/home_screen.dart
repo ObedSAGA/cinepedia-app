@@ -45,10 +45,12 @@ class _HomeVIewState extends ConsumerState<_HomeView> {
         const CustomAppbar(),
         MoviesSlideShow(movies: nowPlayingMoviesSlide),
         MovieHorizontalListView(
-          movies: nowPlayingMovies,
-          title: 'En cines',
-          subtitle: 'Lunes 20',
-        )
+            movies: nowPlayingMovies,
+            title: 'En cines',
+            subtitle: 'Lunes 20',
+            loadNextPage: () {
+              ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+            })
       ],
     );
   }

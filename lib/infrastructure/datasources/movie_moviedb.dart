@@ -9,7 +9,7 @@ class MovieMovieDB {
         required this.overview,
         required this.popularity,
         required this.posterPath,
-        required this.releaseDate,
+        required this.releaseDate ,
         required this.title,
         required this.video,
         required this.voteAverage,
