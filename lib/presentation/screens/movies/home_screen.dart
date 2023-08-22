@@ -40,18 +40,54 @@ class _HomeVIewState extends ConsumerState<_HomeView> {
 
     if (nowPlayingMoviesSlide.isEmpty) return const CircularProgressIndicator();
 
-    return Column(
-      children: [
-        const CustomAppbar(),
-        MoviesSlideShow(movies: nowPlayingMoviesSlide),
-        MovieHorizontalListView(
-            movies: nowPlayingMovies,
-            title: 'En cines',
-            subtitle: 'Lunes 20',
-            loadNextPage: () {
-              ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
-            })
-      ],
-    );
+    return CustomScrollView(slivers: [
+
+      const SliverAppBar(
+        floating: true,
+        flexibleSpace: FlexibleSpaceBar(
+          title: CustomAppbar(),
+        ),
+      ),
+
+
+      SliverList(
+          delegate: SliverChildBuilderDelegate((context, index) {
+        return Column(
+          children: [
+            MoviesSlideShow(movies: nowPlayingMoviesSlide),
+            MovieHorizontalListView(
+                movies: nowPlayingMovies,
+                title: 'En cines',
+                subtitle: 'Lunes 20',
+                loadNextPage: () {
+                  ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+                }),
+            MovieHorizontalListView(
+                movies: nowPlayingMovies,
+                title: 'Próximamente',
+                subtitle: 'En este mes',
+                loadNextPage: () {
+                  ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+                }),
+            MovieHorizontalListView(
+                movies: nowPlayingMovies,
+                title: 'Populares',
+                loadNextPage: () {
+                  ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+                }),
+            MovieHorizontalListView(
+                movies: nowPlayingMovies,
+                title: 'Mejores calificadas',
+                subtitle: 'De todos los tiempos',
+                loadNextPage: () {
+                  ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+                }),
+            const SizedBox(
+              height: 50,
+            )
+          ],
+        );
+      }, childCount: 1)),
+    ]);
   }
 }
