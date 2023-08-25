@@ -5,12 +5,12 @@ class FullScreenLoader extends StatelessWidget {
 
   Stream<String> getLoadingMessages() {
     final messages = <String>[
-      'Prepara palomitas',
-      'Silencia el móvil',
-      'Apaga las luces',
-      'Invita a tus amigos',
-      'Modo no molestar',
-      'Maratón en camino',
+      'prepara palomitas',
+      'silencia el móvil',
+      'apaga las luces',
+      'invita a tus amigos',
+      'activa modo no molestar',
+      'maratón en camino',
     ];
 
     return Stream.periodic(
@@ -32,7 +32,7 @@ class FullScreenLoader extends StatelessWidget {
         StreamBuilder(
           stream: getLoadingMessages(),
           builder: (context, snapshot) {
-            if (!snapshot.hasData) return const Text('Un momento...');
+            if (!snapshot.hasData) return const Text('comienza la diversión');
             return Text(snapshot.data!);
           },
         )
