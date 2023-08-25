@@ -44,18 +44,15 @@ class _HomeVIewState extends ConsumerState<_HomeView> {
     final upcomingMovies = ref.watch(upcomingMoviesProvider);
     final topRatedMovies = ref.watch(topRatedMoviesProvider);
 
-    if (nowPlayingMoviesSlide.isEmpty) return const CircularProgressIndicator();
+    return FullScreenLoader();
 
     return CustomScrollView(slivers: [
-
       const SliverAppBar(
         floating: true,
         flexibleSpace: FlexibleSpaceBar(
           title: CustomAppbar(),
         ),
       ),
-
-
       SliverList(
           delegate: SliverChildBuilderDelegate((context, index) {
         return Column(
@@ -64,14 +61,12 @@ class _HomeVIewState extends ConsumerState<_HomeView> {
             MovieHorizontalListView(
                 movies: nowPlayingMovies,
                 title: 'En cines',
-                subtitle: 'Lunes 20',
                 loadNextPage: () {
                   ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
                 }),
             MovieHorizontalListView(
                 movies: upcomingMovies,
                 title: 'Próximamente',
-                subtitle: 'En este mes',
                 loadNextPage: () {
                   ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
                 }),
@@ -84,7 +79,6 @@ class _HomeVIewState extends ConsumerState<_HomeView> {
             MovieHorizontalListView(
                 movies: topRatedMovies,
                 title: 'Mejores calificadas',
-                subtitle: 'De todos los tiempos',
                 loadNextPage: () {
                   ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
                 }),
