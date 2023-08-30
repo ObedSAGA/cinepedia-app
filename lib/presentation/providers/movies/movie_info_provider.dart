@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../domain/entities/movie.dart';
 
-final movieInfoProvider = StateNotifierProvider((ref) {
+final movieInfoProvider = StateNotifierProvider<MovieMapNotifer, Map<String, Movie>>((ref) {
   final movieRepository = ref.watch(movieRepositoryProvider);
 
   return MovieMapNotifer(getMovie: movieRepository.getMovieById);
